@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Tap-Payments:TapCardScannerKit-Android:0.0.1.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/59725d628b58753414021c1f8a7308d1/TapCardScannerKit-Android-0.0.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/59725d628b58753414021c1f8a7308d1/TapCardScannerKit-Android-0.0.1.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/TapCardScannerKit-Android/0.0.1.1/5c8e4ac4805c1966fddb1bf9c1aeae1dc6f5943b/TapCardScannerKit-Android-0.0.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

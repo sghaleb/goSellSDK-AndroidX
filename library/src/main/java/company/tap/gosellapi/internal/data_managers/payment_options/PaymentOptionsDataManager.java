@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import company.tap.cardscanner.TapCard;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
@@ -82,6 +83,33 @@ public class PaymentOptionsDataManager {
 
     public void disablePayButton() {
         listener.disablePayButton();
+    }
+
+    public void cardScanned(TapCard card) {
+        CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
+        if (cardCredentialsViewModel == null) return;
+
+        String cardNumber = card.getCardNumber();
+        if (cardNumber != null && !cardNumber.isEmpty()) {
+
+            cardCredentialsViewModel.setCardNumber(cardNumber);
+        }
+
+        String expryDate = card.getExpirationDate();
+
+        if (expryDate != null) {
+            System.out.println("expryDate is"+ expryDate);
+                //cardCredentialsViewModel.setExpirationYear((expryDate.substring(1)));
+               // cardCredentialsViewModel.setExpirationMonth((expryDate.substring(2)));
+                cardCredentialsViewModel.setExpirationYear(expryDate);
+        }
+
+        String cardholderName = card.getCardHolder();
+        if (cardholderName != null && !cardholderName.isEmpty()) {
+            cardCredentialsViewModel.setNameOnCard(card.getCardHolder());
+        }
+
+        cardCredentialsViewModel.updateData();
     }
 
     /**

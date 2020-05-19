@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: company.tap:PayCards-Tap-Android:0.1.1@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4ee2ed1c8a50229e2afc712647705c76/jetified-PayCards-Tap-Android-0.1.1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4ee2ed1c8a50229e2afc712647705c76/jetified-PayCards-Tap-Android-0.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4ee2ed1c8a50229e2afc712647705c76/jetified-PayCards-Tap-Android-0.1.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/company.tap/PayCards-Tap-Android/0.1.1/1974b404c70119b3e13cdbbcadfa02aafd66c9d9/PayCards-Tap-Android-0.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/company.tap/PayCards-Tap-Android/0.1.1/46292f83a61beab0d14319082f797b261f4d71a5/PayCards-Tap-Android-0.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

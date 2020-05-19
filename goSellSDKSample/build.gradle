@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -20,13 +21,13 @@ android {
 
     defaultConfig {
         applicationId "company.tap.sample"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 2
         versionName "2.0"
 
         vectorDrawables.useSupportLibrary = true
-
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -67,4 +68,5 @@ dependencies {
     implementation 'com.github.Tap-Payments:TapColorsKit-Android:1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
 }

@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,10 +11,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
 import android.webkit.ClientCertRequest;
@@ -30,8 +35,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,6 +50,10 @@ import com.bumptech.glide.request.RequestOptions;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import company.tap.cardscanner.TapCard;
+import company.tap.cardscanner.TapCountDownTimer;
+import company.tap.cardscanner.TapTextRecognitionCallBack;
+import company.tap.cardscanner.TapTextRecognitionML;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -82,11 +93,13 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
+
+
 /**
  * The type Go sell payment activity.
  */
 public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener, OTPFullScreenDialog.ConfirmOTP,
-        ICardDeleteListener {
+        ICardDeleteListener, TapTextRecognitionCallBack {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -117,6 +130,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private ScrollView main_windowed_scrollview;
     private static final String TAG = "GoSellPaymentActivity";
+
+
+    Handler handler;
+    Runnable r;
+    private static final int PICK_IMAGE_ID = 102;
+    private TapTextRecognitionML textRecognitionML;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,11 +184,27 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         saveCardChecked = false;
 //        setKeyboardVisibilityListener();
 
-
+        textRecognitionML = new TapTextRecognitionML(this);
         if (recentSectionViewModel != null) recentSectionViewModel.EnableRecentView();
         if (webPaymentViewModel != null) webPaymentViewModel.enableWebView();
         PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
         if (cardCredentialsViewModel != null) cardCredentialsViewModel.enableCardScanView();
+      /*  handler = new Handler();
+        r = new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                Toast.makeText(GoSellPaymentActivity.this, "user inactivr", Toast.LENGTH_SHORT).show();
+              *//* CardIOActivity cardIOActivity = new CardIOActivity();
+               cardIOActivity.onBackPressed();*//*
+               // Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
+              //  startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+                Intent camIntent = new      Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camIntent,PICK_IMAGE_ID);
+            }
+        };
+        startHandler();*/
     }
 
     private void initViews() {
@@ -216,6 +251,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
         if (cardCredentialsViewModel != null) cardCredentialsViewModel.enableCardScanView();
         super.onBackPressed();
+
 
     }
 
@@ -335,13 +371,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     private boolean isTransactionModeSaveCard() {
-        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()!=null){
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest()!=null){
             return PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD;
         }else return false;
     }
 
     private boolean isTransactionModeTokenizeCard() {
-        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()!=null){
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest()!=null){
         return PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD;
         }else return false;
     }
@@ -404,6 +440,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void startScanCard() {
+        setTapCountDownTimer();
         Intent scanCard = new Intent(this, CardIOActivity.class);
         scanCard.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
         scanCard.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, true); // default: false
@@ -413,8 +450,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         scanCard.putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, false);
         scanCard.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true);
         scanCard.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
-
+        scanCard.putExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE, true);
+        scanCard.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, true);
         startActivityForResult(scanCard, SCAN_REQUEST_CODE);
+
     }
 
     private void startSavedCardPaymentProcess() {
@@ -783,6 +822,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 }, 1000);
 
                 break;
+            case PICK_IMAGE_ID:
+              //  Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                if(bitmap!=null)
+                    textRecognitionML.decodeImage(bitmap);
+                break;
 
         }
     }
@@ -1058,6 +1103,21 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         this.showDialog(getResources().getString(R.string.error_deleting_card_title), getResources().getString(R.string.error_deleting_card_msg), false);
     }
 
+    @Override
+    public void onRecognitionSuccess(TapCard card) {
+        System.out.println("card obtained "+ card.getCardNumber() +"" + card.getCardHolder() +"" + card.getExpirationDate()  );
+        if(card!=null){
+          // CreditCard scanResult = card.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+            dataSource.cardScanned(card);
+        }
+
+    }
+
+    @Override
+    public void onRecognitionFailure(String error) {
+        System.out.println("error obtained "+ error);
+    }
+
 
     /**
      * The type Card payment web view client.
@@ -1305,6 +1365,30 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         }.start();
     }
 
+    private void setTapCountDownTimer() {
+        final TapCountDownTimer counter = new TapCountDownTimer(this);
+        counter.setTimer(5000, 1000);
+        counter.start(() -> {
+          /*  Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
+              startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);*/
+           Intent camIntent = new      Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(camIntent,PICK_IMAGE_ID);
+        });
+    }
+   /* @Override
+    public void onUserInteraction() {
+        // TODO Auto-generated method stub
+        super.onUserInteraction();
+        stopHandler();//stop first and then start
+        startHandler();
+    }
+    public void stopHandler() {
+        handler.removeCallbacks(r);
+    }
+
+    public void startHandler() {
+        handler.postDelayed(r, 5000);
+    }*/
 }
 
 

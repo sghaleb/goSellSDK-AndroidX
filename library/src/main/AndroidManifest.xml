@@ -38,6 +38,19 @@
         android:name=".internal.activities.AsynchronousPaymentActivity"
         android:theme="@style/TransparentCompat"/>
 
+    <provider
+        android:name=".open.GenericFileProvider"
+        android:authorities="company.tap.sample.provider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths"/>
+    </provider>
+
+    <meta-data
+        android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+        android:value="ocr" />
   </application>
 
 </manifest>
