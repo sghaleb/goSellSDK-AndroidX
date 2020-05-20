@@ -132,8 +132,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private static final String TAG = "GoSellPaymentActivity";
 
 
-    Handler handler;
-    Runnable r;
     private static final int PICK_IMAGE_ID = 102;
     private TapTextRecognitionML textRecognitionML;
 
@@ -189,22 +187,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if (webPaymentViewModel != null) webPaymentViewModel.enableWebView();
         PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
         if (cardCredentialsViewModel != null) cardCredentialsViewModel.enableCardScanView();
-      /*  handler = new Handler();
-        r = new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                Toast.makeText(GoSellPaymentActivity.this, "user inactivr", Toast.LENGTH_SHORT).show();
-              *//* CardIOActivity cardIOActivity = new CardIOActivity();
-               cardIOActivity.onBackPressed();*//*
-               // Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
-              //  startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
-                Intent camIntent = new      Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(camIntent,PICK_IMAGE_ID);
-            }
-        };
-        startHandler();*/
     }
 
     private void initViews() {
@@ -440,6 +422,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void startScanCard() {
+        //Counter added to close the CardIO view
         setTapCountDownTimer();
         Intent scanCard = new Intent(this, CardIOActivity.class);
         scanCard.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
@@ -760,6 +743,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                     CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                     dataSource.cardScanned(scanResult);
+
+
                 }
                 break;
 
@@ -823,8 +808,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
                 break;
             case PICK_IMAGE_ID:
-              //  Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 if(bitmap!=null)
                     textRecognitionML.decodeImage(bitmap);
                 break;
@@ -1107,7 +1091,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     public void onRecognitionSuccess(TapCard card) {
         System.out.println("card obtained "+ card.getCardNumber() +"" + card.getCardHolder() +"" + card.getExpirationDate()  );
         if(card!=null){
-          // CreditCard scanResult = card.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
             dataSource.cardScanned(card);
         }
 
@@ -1369,26 +1352,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         final TapCountDownTimer counter = new TapCountDownTimer(this);
         counter.setTimer(5000, 1000);
         counter.start(() -> {
-          /*  Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
-              startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);*/
-           Intent camIntent = new      Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(camIntent,PICK_IMAGE_ID);
+            Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
+           startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+
         });
-    }
-   /* @Override
-    public void onUserInteraction() {
-        // TODO Auto-generated method stub
-        super.onUserInteraction();
-        stopHandler();//stop first and then start
-        startHandler();
-    }
-    public void stopHandler() {
-        handler.removeCallbacks(r);
+        //todo:This is calling the backPress of CardIoActivity
+        new CardIOActivity().onBackPressed();
     }
 
-    public void startHandler() {
-        handler.postDelayed(r, 5000);
-    }*/
+
 }
 
 
