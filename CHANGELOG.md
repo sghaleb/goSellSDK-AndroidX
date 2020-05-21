@@ -1,4 +1,8 @@
 # CHANGELOG
+## [3.6.12] - 2020-05-
+### Version release HotFix:
+- Scanning enabled for non-embossed cards
+- Update Readme and ChangeLog.
 ## [3.6.11] - 2020-04-19
 ### Version release HotFix:
 - CardType validation on Scanning clear on cancel

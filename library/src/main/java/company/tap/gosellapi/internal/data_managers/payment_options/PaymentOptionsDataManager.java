@@ -99,6 +99,15 @@ public class PaymentOptionsDataManager {
 
         if (expryDate != null) {
             System.out.println("expryDate is"+ expryDate);
+            if(expryDate.contains("/")){
+                String[] items = expryDate.split("/");
+                for (String item : items)
+                {
+                    System.out.println("item = " + item);
+                    cardCredentialsViewModel.setExpirationMonth(item);
+                    cardCredentialsViewModel.setExpirationYear(item);
+                }
+            }
                 //cardCredentialsViewModel.setExpirationYear((expryDate.substring(1)));
                // cardCredentialsViewModel.setExpirationMonth((expryDate.substring(2)));
                 cardCredentialsViewModel.setExpirationYear(expryDate);

@@ -1354,7 +1354,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private void setTapCountDownTimer() {
 
         final TapCountDownTimer counter = new TapCountDownTimer(this);
-        counter.setTimer(20000, 1000);
+        counter.setTimer(2000, 1000);
         counter.start(() -> {
             if(openImagePicker) {
                 Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
