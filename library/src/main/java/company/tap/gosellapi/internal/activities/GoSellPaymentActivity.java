@@ -135,6 +135,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private static final int PICK_IMAGE_ID = 102;
     private TapTextRecognitionML textRecognitionML;
 
+    private boolean openImagePicker= true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -435,8 +437,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         scanCard.putExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE, true);
         scanCard.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, true);
         startActivityForResult(scanCard, SCAN_REQUEST_CODE);
+        openImagePicker= true;
         //Counter added to close the CardIO view
         setTapCountDownTimer();
+
     }
 
     private void startSavedCardPaymentProcess() {
@@ -743,6 +747,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                     CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                     dataSource.cardScanned(scanResult);
+                    openImagePicker= false;
                 }
                 break;
 
@@ -1349,11 +1354,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private void setTapCountDownTimer() {
 
         final TapCountDownTimer counter = new TapCountDownTimer(this);
-        counter.setTimer(5000, 1000);
+        counter.setTimer(20000, 1000);
         counter.start(() -> {
-            Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
-           startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
-           finishActivity(SCAN_REQUEST_CODE);
+            if(openImagePicker) {
+                Intent chooseImageIntent = ImagePicker.getPickImageIntent(GoSellPaymentActivity.this);
+                startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+                finishActivity(SCAN_REQUEST_CODE);
+            }
 
         });
     }
