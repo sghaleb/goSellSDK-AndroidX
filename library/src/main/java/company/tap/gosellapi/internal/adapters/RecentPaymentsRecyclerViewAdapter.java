@@ -130,7 +130,6 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Recy
        // return super.getItemViewType(position);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         System.out.println("holder Type"+holder.getItemViewType());
