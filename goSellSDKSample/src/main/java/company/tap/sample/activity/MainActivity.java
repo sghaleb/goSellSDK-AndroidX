@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         PhoneNumber phoneNumber = customer != null ? customer.getPhone() : new PhoneNumber("965", "69045932");
 
-        return new Customer.CustomerBuilder(null).email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder("cus_Kh1b4220191939i1KP2506448").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(), phoneNumber.getNumber()))
                 .middleName("middlename").build();
 

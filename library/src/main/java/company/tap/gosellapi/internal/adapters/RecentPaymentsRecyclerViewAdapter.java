@@ -1,10 +1,19 @@
 package company.tap.gosellapi.internal.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.PaymentDataRequest;
+import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.material.card.MaterialCardView;
+
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -15,23 +24,31 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Optional;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.activities.BaseActivity;
+import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.utils.PaymentsUtil;
 import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 
 /**
  * The type Recent payments recycler view adapter.
  */
-public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
+public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /**
      * The interface Recent payments recycler view adapter listener.
@@ -65,7 +82,11 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     private int focusedPosition = Constants.NO_FOCUS;
     private RecentPaymentsRecyclerViewAdapterListener listener;
     private GroupViewHolder groupViewHolderListener;
-
+    private static final int TYPE_GOOGLE_PAY = 0;
+    private static final int TYPE_SAVED_CARD = 1;
+    private View view;
+    private int totalItemCount = 0;
+    private ArrayList<Object> modifiedDatasource = new ArrayList<Object>();
 
     /**
      * Instantiates a new Recent payments recycler view adapter.
@@ -74,27 +95,66 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
      * @param listener   the listener
      */
     public RecentPaymentsRecyclerViewAdapter(ArrayList<SavedCard> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
-        this.datasource = datasource;
+        this.datasource= datasource;
+        modifiedDatasource.add(TYPE_GOOGLE_PAY,"GooglePay");
+        modifiedDatasource.addAll(TYPE_SAVED_CARD,datasource);
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public RecentPaymentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_payments, parent, false);
-        return new RecentPaymentsViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        System.out.println("viewType value"+viewType);
+        System.out.println("totalItemCount value"+modifiedDatasource);
+        switch(viewType) {
+            case TYPE_SAVED_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_payments, parent, false);
+                return new RecentPaymentsViewHolder(view);
+            case TYPE_GOOGLE_PAY:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_gpay, parent, false);
+                return new GooglePaymentViewHolder(view);
+
+            default:view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_gpay, parent, false);
+                return new GooglePaymentViewHolder(view);
+        }
+
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull RecentPaymentsViewHolder holder, int position) {
-        SavedCard card = datasource.get(position);
-        holder.bind(position, card);
+    public int getItemViewType(int position) {
+        System.out.println("position inside"+position);
+        if(position< modifiedDatasource.size()-1){
+            return TYPE_SAVED_CARD;
+        }else return TYPE_GOOGLE_PAY;
+       // return super.getItemViewType(position);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        System.out.println("holder Type"+holder.getItemViewType());
+        System.out.println("position Type"+position);
+        switch (holder.getItemViewType()) {
+            case 0:
+                GooglePaymentViewHolder googlePaymentViewHolder = (GooglePaymentViewHolder) holder;
+                googlePaymentViewHolder.bind(position,holder);
+                break;
+            case 1:
+                RecentPaymentsViewHolder recentPaymentViewHolder = (RecentPaymentsViewHolder)holder;
+                SavedCard card = datasource.get(position);
+                recentPaymentViewHolder.bind(position, card);
+
+                break;
+        }
+
         //holder.setFocused(position == focusedPosition);
     }
 
     @Override
     public int getItemCount() {
-        return datasource.size();
+//        totalItemCount = datasource.size()+1;
+        return modifiedDatasource.size();
     }
 
 
@@ -182,8 +242,8 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             final RecentPaymentsViewHolder holder = (RecentPaymentsViewHolder) this.parent.getChildViewHolder(this.parent.getChildAt(i));
 
             if(holder!=null && holder == newHolder && holder.getFocusStatus()){
-              continue;
-             }
+                continue;
+            }
             holder.setFocused(false);
         }
 
@@ -225,6 +285,8 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             super(itemView);
             itemView.setOnClickListener(this);
         }
+
+
 
         private void bind(int position, SavedCard card) {
             this.position = position;
@@ -270,20 +332,20 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
                     "?");
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BaseActivity.getCurrent());
-                dialogBuilder.setTitle(v.getContext().getString(R.string.delete_saved_card_title));
-                dialogBuilder.setMessage(stringBuilder.toString());
-                dialogBuilder.setCancelable(false);
+            dialogBuilder.setTitle(v.getContext().getString(R.string.delete_saved_card_title));
+            dialogBuilder.setMessage(stringBuilder.toString());
+            dialogBuilder.setCancelable(false);
 
-                dialogBuilder.setPositiveButton(v.getContext().getString(R.string.delete_saved_card_button_Delete),
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(groupViewHolderListener!=null)groupViewHolderListener.changeGroupActionTitle();
-                        listener.deleteCard(datasource.get(clickedPosition).getId());
-                    }
-                });
-                    dialogBuilder.setNegativeButton(v.getContext().getString(R.string.delete_saved_card_button_Cancel),
-                            new DialogInterface.OnClickListener() {
+            dialogBuilder.setPositiveButton(v.getContext().getString(R.string.delete_saved_card_button_Delete),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(groupViewHolderListener!=null)groupViewHolderListener.changeGroupActionTitle();
+                            listener.deleteCard(datasource.get(clickedPosition).getId());
+                        }
+                    });
+            dialogBuilder.setNegativeButton(v.getContext().getString(R.string.delete_saved_card_button_Cancel),
+                    new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if(groupViewHolderListener!=null)groupViewHolderListener.changeGroupActionTitle();
@@ -291,15 +353,15 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
                         }
                     });
 
-                dialogBuilder.show();
-            }
+            dialogBuilder.show();
+        }
 
         @Override
         public void onClick(View v) {
 
             if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()== TransactionMode.SAVE_CARD)return;
 
-             checkShakingStatus(position);
+            checkShakingStatus(position);
 
             RecentPaymentsRecyclerViewAdapter.this.setFocused(position);
             listener.recentPaymentItemClicked(position);
@@ -350,5 +412,61 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         public boolean getShakinStatusFlag(){
             return this.shakingStatusFlag;
         }
+
+
+
     }
+    public class GooglePaymentViewHolder extends RecyclerView.ViewHolder{
+        RelativeLayout google_pay_button_layout;
+        // A client for interacting with the Google Pay API.
+        private PaymentsClient paymentsClient;
+        // Arbitrarily-picked constant integer you define to track a request for payment data activity.
+        private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
+        private GooglePaymentViewHolder(View itemView){
+            super(itemView);
+            paymentsClient = PaymentsUtil.createPaymentsClient(  GoSellPaymentActivity.getCurrent());
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        private void bind(int position, RecyclerView.ViewHolder holder) {
+            google_pay_button_layout = itemView.findViewById(R.id.google_pay_button_layout);
+
+            google_pay_button_layout.setOnClickListener(v -> {
+                requestPayment(v,holder);
+            });
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void requestPayment(View view, RecyclerView.ViewHolder holder) {
+
+
+
+
+            // The price provided to the API should include taxes and shipping.
+            // This price is not displayed to the user.
+            double garmentPrice = PaymentDataSource.getInstance().getAmount().doubleValue();
+            long garmentPriceCents = Math.round(garmentPrice * PaymentsUtil.CENTS_IN_A_UNIT.longValue());
+            long priceCents = garmentPriceCents ;
+
+            Optional<JSONObject> paymentDataRequestJson = PaymentsUtil.getPaymentDataRequest(priceCents);
+            if (!paymentDataRequestJson.isPresent()) {
+                return;
+            }
+
+            PaymentDataRequest request =
+                    PaymentDataRequest.fromJson(paymentDataRequestJson.get().toString());
+
+            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
+            // AutoResolveHelper to wait for the user interacting with it. Once completed,
+            // onActivityResult will be called with the result.
+            if (request != null) {
+                 AutoResolveHelper.resolveTask(
+                         paymentsClient.loadPaymentData(request),
+                       GoSellPaymentActivity.getCurrent(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+             }
+
+        }
+
+    }
+
 }

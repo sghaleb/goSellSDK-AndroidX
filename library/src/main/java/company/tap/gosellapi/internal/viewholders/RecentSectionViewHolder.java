@@ -50,7 +50,10 @@ public class RecentSectionViewHolder
             if ((data != null && PaymentDataSource.getInstance().getCardType() != null) && !PaymentDataSource.getInstance().getCardType().toString().equals(data.get(i).getFunding())) {
             data.remove(i);
             }
+
         }
+
+
         adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
         recentPaymentsRecyclerView.setAdapter(adapter);
         if(viewModel!=null)
