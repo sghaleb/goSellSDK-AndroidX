@@ -281,12 +281,21 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         businessName.setText(header_title);
 
 
-        if (ThemeObject.getInstance().getHeaderFont() != null)
+        if (ThemeObject.getInstance().getHeaderFont() != null) {
             businessName.setTypeface(ThemeObject.getInstance().getHeaderFont());
-        if (ThemeObject.getInstance().getHeaderTextColor() != 0)
+            cancel_payment_ll.setTypeface(ThemeObject.getInstance().getHeaderFont());
+        }
+
+        if (ThemeObject.getInstance().getHeaderTextColor() != 0) {
             businessName.setTextColor(ThemeObject.getInstance().getHeaderTextColor());
-        if (ThemeObject.getInstance().getHeaderTextSize() != 0)
+            cancel_payment_ll.setTextColor(ThemeObject.getInstance().getHeaderTextColor());
+        }
+
+        if (ThemeObject.getInstance().getHeaderTextSize() != 0) {
             businessName.setTextSize(ThemeObject.getInstance().getHeaderTextSize());
+            cancel_payment_ll.setTextSize(ThemeObject.getInstance().getHeaderTextSize());
+        }
+
         if (ThemeObject.getInstance().getHeaderBackgroundColor() != 0)
             toolbar.setBackgroundColor(ThemeObject.getInstance().getHeaderBackgroundColor());
     }
