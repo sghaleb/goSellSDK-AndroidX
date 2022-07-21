@@ -14,7 +14,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
     compileSdkVersion 30
 
@@ -26,7 +25,6 @@ android {
         versionName "2.0"
 
         vectorDrawables.useSupportLibrary = true
-
     }
 
     buildTypes {
@@ -34,8 +32,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
         customDebugType {
             debuggable true
+            buildConfigField("String", "VERSION_NAME", "\"${defaultConfig.versionName}\"")
         }
     }
 

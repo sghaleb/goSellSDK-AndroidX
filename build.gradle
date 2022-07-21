@@ -4,11 +4,13 @@ buildscript {
     
     repositories {
         google()
-        jcenter()
+        // jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        // classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
+        // classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,13 +20,19 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        // jcenter()
+        mavenCentral()
+
         maven { url 'https://jitpack.io' }
     }
+}
+
+buildscript {
+    //Required for our library version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880
+    project.ext.set("android_version_code", 70806)
+    project.ext.set("android_version_name", "7.8.6")
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-apply plugin('maven-publish')
