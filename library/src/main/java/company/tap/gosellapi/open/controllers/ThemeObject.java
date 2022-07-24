@@ -83,6 +83,12 @@ public class ThemeObject {
         private int                     dialogTextSize;
         private int                     dialogBackgroundColor;
         private int                     dialogbuttonColor;
+        
+
+        private int                     paddingLeft;
+        private int                     paddingRight;
+        private int                     paddingTop;
+        private int                     paddingBottom;
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,7 +98,7 @@ public class ThemeObject {
          */
         public ThemeObject setSdkLanguage(String sdkLanguage) {
                 this.sdkLanguage = sdkLanguage;
-        return this;
+                return this;
         }
 
         /**
@@ -410,6 +416,62 @@ public class ThemeObject {
                 return this;
         }
 
+        /**
+         * Sets padding
+         * @param left
+         * @param top
+         * @param right
+         * @param bottom
+         * @return ThemeObject
+         */
+        public ThemeObject setPadding(int left, int top, int right, int bottom) {
+                this.paddingLeft = left;
+                this.paddingTop = top;
+                this.paddingRight = right;
+                this.paddingBottom = bottom;
+
+                return this;
+        }
+
+        /**
+         * Sets top padding
+         * @param padding
+         * @return ThemeObject
+         */
+        public ThemeObject setPaddingLeft(int padding) {
+                this.paddingLeft = padding;
+                return this;
+        }
+
+        /**
+         * Sets right padding
+         * @param padding
+         * @return ThemeObject
+         */
+        public ThemeObject setPaddingRight(int padding) {
+                this.paddingRight = padding;
+                return this;
+        }
+
+        /**
+         * Sets top padding
+         * @param padding
+         * @return ThemeObject
+         */
+        public ThemeObject setPaddingTop(int padding) {
+                this.paddingTop = padding;
+                return this;
+        }
+
+        /**
+         * Sets bottom padding
+         * @param padding
+         * @return ThemeObject
+         */
+        public ThemeObject setPaddingBottom(int padding) {
+                this.paddingBottom = padding;
+                return this;
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -692,7 +754,37 @@ public class ThemeObject {
                 return dialogbuttonColor;
         }
 
+        /**
+         * 
+         * @return
+         */
+        public int getPaddingLeft() {
+                return this.paddingLeft;
+        }
 
+        /**
+         * 
+         * @return
+         */
+        public int getPaddingRight() {
+                return this.paddingRight;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getPaddingTop() {
+                return this.paddingTop;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getPaddingBottom() {
+                return this.paddingBottom;
+        }
 
 
         //////////////////////////////////////////  Single Instance ////////////////////////

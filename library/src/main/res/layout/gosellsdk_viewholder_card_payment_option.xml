@@ -338,9 +338,7 @@
         android:checked="false"
         app:layout_constraintTop_toBottomOf="@id/saveCardTopSeparator"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -141,6 +141,9 @@ public class GoSellPaymentActivity extends BaseActivity
         ScrollView sc = findViewById(R.id.main_windowed_scrollview);
 
         sc.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+        // int padding_in_dp = 6;  // 6 dps
+        // final float scale = getResources().getDisplayMetrics().density;
+        // int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -149,7 +152,11 @@ public class GoSellPaymentActivity extends BaseActivity
         dataSource = PaymentDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         final FrameLayout fragmentContainer = findViewById(R.id.paymentActivityFragmentContainer);
-        
+        fragmentContainer.setPadding(ThemeObject.getInstance().getPaddingLeft(),
+                                ThemeObject.getInstance().getPaddingTop(), 
+                                ThemeObject.getInstance().getPaddingRight(), 
+                                ThemeObject.getInstance().getPaddingBottom());
+
         //Register a callback to be invoked when the global layout state or the visibility of views within the view tree changes
         fragmentContainer.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -188,6 +195,11 @@ public class GoSellPaymentActivity extends BaseActivity
         setupHeader();
 
         payButton = findViewById(R.id.payButtonId);
+        payButton.setPadding(ThemeObject.getInstance().getPaddingLeft(),
+                                ThemeObject.getInstance().getPaddingTop(),
+                                ThemeObject.getInstance().getPaddingRight(),
+                                ThemeObject.getInstance().getPaddingBottom());
+                                
         payButton.setEnabled(false);
         if (ThemeObject.getInstance().getPayButtonDisabledTitleColor() != 0)
             payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
