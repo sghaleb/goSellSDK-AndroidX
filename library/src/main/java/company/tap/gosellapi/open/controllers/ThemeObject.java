@@ -29,6 +29,8 @@ public class ThemeObject {
          * 
          */
         private int                     backgroundColor;
+        private int                     regionBackgroundColor;
+        private int                     regionTextColor;
 
         /**
          *  Appearance Header
@@ -100,6 +102,26 @@ public class ThemeObject {
          */
         public ThemeObject setBackgroundColor(int backgroundColor) {
                 this.backgroundColor = backgroundColor; 
+                return this;
+        }
+
+        /**
+         * Sets the region background color
+         * @param regionBackgroundColor
+         * @return ThemeObject
+         */
+        public ThemeObject setRegionBackgroundColor(int regionBackgroundColor) {
+                this.regionBackgroundColor = regionBackgroundColor; 
+                return this;
+        }
+
+        /**
+         * Sets the region text color
+         * @param regionTextColor
+         * @return ThemeObject
+         */
+        public ThemeObject setRegionTextColor(int regionTextColor) {
+                this.regionTextColor = regionTextColor; 
                 return this;
         }
 
@@ -419,6 +441,23 @@ public class ThemeObject {
          */
         public int getBackgroundColor() {
                 return this.backgroundColor;
+        }
+
+        /**
+         * Returns the individual region background color
+         * 
+         * @return int (Color Value)
+         */
+        public int getRegionBackgroundColor() {
+                return this.regionBackgroundColor;
+        }
+
+        /**
+         * Gets the region text color
+         * @return int (Color value)
+         */
+        public int getRegionTextColor() {
+                return this.regionTextColor;
         }
 
         /**

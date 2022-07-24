@@ -16,6 +16,8 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 
+import company.tap.gosellapi.open.controllers.ThemeObject;
+
 /**
  * The type Web payment view holder.
  */
@@ -32,8 +34,10 @@ public class WebPaymentViewHolder
      */
     WebPaymentViewHolder(final View itemView) {
         super(itemView);
+        itemView.setBackgroundColor(ThemeObject.getInstance().getRegionBackgroundColor());
         paymentSystemIcon = itemView.findViewById(R.id.paymentSystemIcon);
         paymentSystemName = itemView.findViewById(R.id.paymentSystemName);
+        paymentSystemName.setTextColor(ThemeObject.getInstance().getRegionTextColor());
         arrowIcon = itemView.findViewById(R.id.arrowIcon);
         if (SDK_INT >= JELLY_BEAN_MR1) {
             if (itemView.getContext().getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {

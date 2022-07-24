@@ -168,8 +168,8 @@ public class CardCredentialsViewHolder
 
         super(view);
 
-        // ConstraintLayout layout = itemView.findViewById(R.id.cardPaymentOptionsContainer);
-        // layout.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+        ConstraintLayout layout = itemView.findViewById(R.id.cardPaymentOptionsContainer);
+        layout.setBackgroundColor(ThemeObject.getInstance().getRegionBackgroundColor());
         
         cardNumberFieldTextInputLayout=itemView.findViewById(R.id.cardNumberFieldTextInputLayout);
         cvvFieldTextInputLayout=itemView.findViewById(R.id.cvvFieldContainer);

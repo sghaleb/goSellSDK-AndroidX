@@ -31,9 +31,11 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
     CurrencyViewHolder(View view) {
 
         super(view);
-        // view.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+        view.setBackgroundColor(ThemeObject.getInstance().getRegionBackgroundColor());
         currencyMainText = view.findViewById(R.id.currencyMainText);
+        currencyMainText.setTextColor(ThemeObject.getInstance().getRegionTextColor());
         currencySecondaryText = view.findViewById(R.id.currencySecondaryText);
+        currencySecondaryText.setTextColor(ThemeObject.getInstance().getRegionTextColor());
         arrowIcon = view.findViewById(R.id.arrowIcon);
 
         if (SDK_INT >= JELLY_BEAN_MR1) {
