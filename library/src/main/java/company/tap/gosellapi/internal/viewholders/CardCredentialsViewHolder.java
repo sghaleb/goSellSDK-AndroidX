@@ -71,6 +71,8 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 import static company.tap.gosellapi.open.enums.CardType.ALL;
 
+import company.tap.gosellapi.open.controllers.ThemeObject;
+
 /**
  * The type Card credentials view holder.
  */
@@ -157,7 +159,6 @@ public class CardCredentialsViewHolder
     private CardCredentialsViewModel viewModel;
     private CardCredentialsTextWatcher cardCredentialsTextWatcher;
 
-
     /**
      * Instantiates a new Card credentials view holder.
      *
@@ -167,6 +168,9 @@ public class CardCredentialsViewHolder
 
         super(view);
 
+        // ConstraintLayout layout = itemView.findViewById(R.id.cardPaymentOptionsContainer);
+        // layout.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+        
         cardNumberFieldTextInputLayout=itemView.findViewById(R.id.cardNumberFieldTextInputLayout);
         cvvFieldTextInputLayout=itemView.findViewById(R.id.cvvFieldContainer);
         expirationDateFieldTextInputLayout=itemView.findViewById(R.id.expirationDateContainer);
@@ -403,13 +407,11 @@ public class CardCredentialsViewHolder
         if(ThemeObject.getInstance().getSaveCardSwitchOffThumbTint()!=0 && ThemeObject.getInstance().getSaveCardSwitchOnThumbTint()!=0&&ThemeObject.getInstance().getSaveCardSwitchOffTrackTint()!=0&&
                     ThemeObject.getInstance().getSaveCardSwitchOnTrackTint()!=0 ){
                 configureSaveCardSwitch();
-
-            }
+        }
 
         if(itemView!=null && itemView.getContext()!=null)
                 if(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext())!=null)
                     cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext()));
-
         }
 
         private void configureSaveCardSwitch(){

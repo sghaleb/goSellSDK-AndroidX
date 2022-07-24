@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 .setHeaderTextSize(17)
                 .setHeaderBackgroundColor(getResources().getColor(R.color.french_gray_new))
 
-
                 .setCardInputFont(Typeface.createFromAsset(getAssets(), "fonts/roboto_light.ttf"))
                 .setCardInputTextColor(getResources().getColor(R.color.black))
                 .setCardInputInvalidTextColor(getResources().getColor(R.color.red))

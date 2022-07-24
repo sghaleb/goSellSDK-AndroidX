@@ -14,7 +14,6 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
  */
 public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupViewHolder, GroupViewModel> implements RecentPaymentsRecyclerViewAdapter.RecentPaymentsRecyclerViewAdapterShakingListener {
 
-
     /**
      * Instantiates a new Group view holder.
      *
@@ -46,7 +45,6 @@ public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupV
             titleTextView.setText(data);
         }
 
-
         if("RECENT".equalsIgnoreCase(data))
             this.editTextView.setVisibility(View.VISIBLE);
             else
@@ -77,5 +75,4 @@ public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupV
         this.cancelTextView.setVisibility(View.INVISIBLE);
         this.editTextView.setVisibility(View.VISIBLE);
     }
-
 }

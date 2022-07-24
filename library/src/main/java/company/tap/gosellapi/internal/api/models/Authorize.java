@@ -12,5 +12,9 @@ public final class Authorize extends Charge {
 
     @SerializedName("auto")
     @Expose
-    @NonNull private AuthorizeActionResponse autorizeAction;
+    @NonNull private AuthorizeActionResponse authorizeAction;
+
+    public AuthorizeActionResponse getAuthorizeAction() {
+        return this.authorizeAction;
+    }
 }

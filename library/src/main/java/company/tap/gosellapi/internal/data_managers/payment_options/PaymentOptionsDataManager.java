@@ -36,6 +36,7 @@ import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
+import android.graphics.Color;
 
 /**
  * The type Payment options data manager.
@@ -364,7 +365,6 @@ public class PaymentOptionsDataManager {
         if (recentSectionViewModel == null) return;
 
         recentSectionViewModel.shakeAllCards(groupViewHolderListener);
-
     }
 
     /**
@@ -798,6 +798,7 @@ public class PaymentOptionsDataManager {
                 EmptyViewModel emptyModel = PaymentOptionsDataManagerUtils.ViewModelUtils
                         .generateEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier,
                                 PaymentOptionsDataManager.this);
+                
                 viewModelsResult.add(emptyModel);
                 for (PaymentOption paymentOption : webPaymentOptions) {
                     WebPaymentViewModel webPaymentModel = PaymentOptionsDataManagerUtils.ViewModelUtils

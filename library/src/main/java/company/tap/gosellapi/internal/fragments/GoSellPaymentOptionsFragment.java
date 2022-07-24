@@ -58,6 +58,8 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initMainRecyclerView(view);
         restoreRecyclerState();
+
+        // view.setBackgroundColor(view.getResources().getColor(R.color.black1));
     }
 
     private void initMainRecyclerView(View view) {
@@ -73,6 +75,8 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         adapter = new PaymentOptionsRecyclerViewAdapter(dataSource);
 
         paymentOptionsRecyclerView.setAdapter(adapter);
+
+        // paymentOptionsRecyclerView.setBackgroundColor(view.getResources().getColor(R.color.black1));
 
         smoothScroller = new LinearSmoothScroller(view.getContext()) {
             @Override protected int getVerticalSnapPreference() {
@@ -110,6 +114,4 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             layoutManagerState = null;
         }
     }
-
-
 }

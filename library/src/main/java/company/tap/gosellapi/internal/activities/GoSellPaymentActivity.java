@@ -85,8 +85,10 @@ import io.card.payment.CreditCard;
 /**
  * The type Go sell payment activity.
  */
-public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener, OTPFullScreenDialog.ConfirmOTP,
-        ICardDeleteListener {
+public class GoSellPaymentActivity extends BaseActivity 
+        implements PaymentOptionsDataManager.PaymentOptionsDataListener, 
+                IPaymentProcessListener, OTPFullScreenDialog.ConfirmOTP, ICardDeleteListener {
+
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -130,10 +132,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
             main_windowed_scrollview = findViewById(R.id.main_windowed_scrollview);
+            RelativeLayout basicLayout = findViewById(R.id.basicLayout);
+            basicLayout.setBackgroundColor(ThemeObject.getInstance().getTranslucentColor());
         } else {
             setContentView(R.layout.gosellapi_activity_main);
         }
 
+        ScrollView sc = findViewById(R.id.main_windowed_scrollview);
+
+        sc.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -142,7 +149,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         dataSource = PaymentDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         final FrameLayout fragmentContainer = findViewById(R.id.paymentActivityFragmentContainer);
-
+        
         //Register a callback to be invoked when the global layout state or the visibility of views within the view tree changes
         fragmentContainer.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -154,7 +161,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                             fragmentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         else
                             fragmentContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
                     }
 
                 });
@@ -163,7 +169,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         saveCardChecked = false;
 //        setKeyboardVisibilityListener();
-
 
         if (recentSectionViewModel != null) recentSectionViewModel.EnableRecentView();
         if (webPaymentViewModel != null) webPaymentViewModel.enableWebView();
@@ -196,13 +201,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             if (cardCredentialsViewModel != null)
                 SDKSession.getListener().userEnabledSaveCardOption(cardCredentialsViewModel.shouldSaveCard());
 
-
-
             boolean keyBoardHidden =  Utils.hideKeyboard(GoSellPaymentActivity.this);
-            Log.d(TAG, "sKeyboard hidden .... after click pay button : "+keyBoardHidden );
+            Log.d(TAG, "Keyboard hidden .... after click pay button : "+keyBoardHidden );
             startPaymentWithTimer();
-
-
         });
 
         setupPayButton();
@@ -213,7 +214,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             ThemeObject.getInstance().setAppearanceMode(AppearanceMode.WINDOWED_MODE);
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -498,7 +498,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
             } else if (PaymentDataManager.getInstance().getPaymentOptionsDataManager().getViewModel(i) instanceof CardCredentialsViewModel) {
                 cardCredentialsViewModel = (CardCredentialsViewModel) PaymentDataManager.getInstance().getPaymentOptionsDataManager().getViewModel(i);
-
             }
         }
     }

@@ -12,6 +12,8 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models_
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 
+import company.tap.gosellapi.open.controllers.ThemeObject;
+
 /**
  * The type Currency view holder.
  */
@@ -29,7 +31,7 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
     CurrencyViewHolder(View view) {
 
         super(view);
-
+        // view.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
         currencyMainText = view.findViewById(R.id.currencyMainText);
         currencySecondaryText = view.findViewById(R.id.currencySecondaryText);
         arrowIcon = view.findViewById(R.id.arrowIcon);
@@ -47,7 +49,6 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                System.out.println(" currency model clicked...... " + viewModel.getData());
                 viewModel.holderClicked();
             }
         });
@@ -55,14 +56,11 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         setTexts(data);
     }
 
-
     private void setTexts(CurrencyViewModelData data) {
 
         AmountedCurrency transactionCurrency    = data.getTransactionCurrency();
         AmountedCurrency selectedCurrency       = data.getSelectedCurrency();
 
-//        System.out.println(" Currency View Holders : Utils.getFormattedCurrency : " +  selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount() );// Utils.getFormattedCurrency(selectedCurrency));
-//        System.out.println(" Currency View Holders : CurrencyFormatter.format(selectedCurrency) : " + CurrencyFormatter.format(selectedCurrency));
         // replace CurrencyFormatter with Utils.getFormattedCurrency();
        if(selectedCurrency!=null && transactionCurrency!=null){
            String selectedCurrencyText = selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount();// Utils.getFormattedCurrency(selectedCurrency);
@@ -78,9 +76,5 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
            }
            currencyMainText.setText(selectedCurrencyText);
        }
-
-
-
-
     }
 }

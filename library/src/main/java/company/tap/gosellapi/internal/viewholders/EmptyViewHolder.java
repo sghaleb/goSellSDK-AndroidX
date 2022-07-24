@@ -2,9 +2,12 @@ package company.tap.gosellapi.internal.viewholders;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.graphics.Color;
 
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.EmptyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
+
+import company.tap.gosellapi.open.controllers.ThemeObject;
 
 /**
  * The type Empty view holder.
@@ -19,6 +22,7 @@ public class EmptyViewHolder
      */
     EmptyViewHolder(View view) {
         super(view);
+        view.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
     }
 
     @Override

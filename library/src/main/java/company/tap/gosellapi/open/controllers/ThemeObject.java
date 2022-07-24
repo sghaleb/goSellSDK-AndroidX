@@ -26,6 +26,11 @@ public class ThemeObject {
         private int                     translucentColor;
 
         /**
+         * 
+         */
+        private int                     backgroundColor;
+
+        /**
          *  Appearance Header
          */
         private Typeface                headerFont;
@@ -87,6 +92,17 @@ public class ThemeObject {
                 this.sdkLanguage = sdkLanguage;
         return this;
         }
+
+        /**
+         * Activity Background Color
+         * @param backgroundColor
+         * @return
+         */
+        public ThemeObject setBackgroundColor(int backgroundColor) {
+                this.backgroundColor = backgroundColor; 
+                return this;
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////////
         /**
          * dialogTextColor
@@ -389,7 +405,21 @@ public class ThemeObject {
                 return this.sdkLanguage;
         }
 
+        /**
+         * 
+         * @return int
+         */
+        public int getTranslucentColor() {
+                return this.translucentColor;
+        }
 
+        /**
+         * 
+         * @return activity background color 
+         */
+        public int getBackgroundColor() {
+                return this.backgroundColor;
+        }
 
         /**
          * @return  header font typeface

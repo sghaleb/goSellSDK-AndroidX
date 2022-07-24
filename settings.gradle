@@ -1,1 +1,3 @@
+rootProject.name = "goSellSDK-AndroidX"
+
 include ':library'

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#C0000000"
+    android:theme="@style/GoSellSDKAppTheme"
     >
 
     <ScrollView
@@ -20,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-
             >
 
             <include layout="@layout/gosellapi_toolbar_main_windowed" />
