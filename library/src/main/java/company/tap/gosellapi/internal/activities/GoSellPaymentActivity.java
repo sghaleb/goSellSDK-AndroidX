@@ -134,13 +134,26 @@ public class GoSellPaymentActivity extends BaseActivity
             main_windowed_scrollview = findViewById(R.id.main_windowed_scrollview);
             RelativeLayout basicLayout = findViewById(R.id.basicLayout);
             basicLayout.setBackgroundColor(ThemeObject.getInstance().getTranslucentColor());
+
+            RelativeLayout basicLayout2 = findViewById(R.id.basicLayout2);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) basicLayout2.getLayoutParams();
+            layoutParams.setMargins(ThemeObject.getInstance().getMarginLeft(),
+                    ThemeObject.getInstance().getMarginTop(),
+                    ThemeObject.getInstance().getMarginRight(),
+                    ThemeObject.getInstance().getMarginBottom());
+        
+            basicLayout2.setLayoutParams(layoutParams);
         } else {
             setContentView(R.layout.gosellapi_activity_main);
         }
 
+        Log.i("TapPay", "Margins:" + String.format("value = %d", ThemeObject.getInstance().getMarginLeft()));
+        // RelativeLayout container = findViewById(R.id.mainContentFrame);
+        
         ScrollView sc = findViewById(R.id.main_windowed_scrollview);
 
         sc.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+                    
         // int padding_in_dp = 6;  // 6 dps
         // final float scale = getResources().getDisplayMetrics().density;
         // int padding_in_px = (int) (padding_in_dp * scale + 0.5f);

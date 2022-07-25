@@ -89,6 +89,11 @@ public class ThemeObject {
         private int                     paddingRight;
         private int                     paddingTop;
         private int                     paddingBottom;
+        
+        private int                     marginLeft;
+        private int                     marginRight;
+        private int                     marginTop;
+        private int                     marginBottom;
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -424,7 +429,7 @@ public class ThemeObject {
          * @param bottom
          * @return ThemeObject
          */
-        public ThemeObject setPadding(int left, int top, int right, int bottom) {
+        public ThemeObject setPaddings(int left, int top, int right, int bottom) {
                 this.paddingLeft = left;
                 this.paddingTop = top;
                 this.paddingRight = right;
@@ -470,6 +475,67 @@ public class ThemeObject {
          */
         public ThemeObject setPaddingBottom(int padding) {
                 this.paddingBottom = padding;
+                return this;
+        }
+
+        /**
+         * 
+         * @param left
+         * @param top
+         * @param right
+         * @param bottom
+         * @return
+         */
+        public ThemeObject setMargins(int left, int top, int right, int bottom) {
+                this.marginLeft = left;
+                this.marginRight = right;
+                this.marginTop = top;
+                this.marginBottom = bottom;
+
+                return this;
+        }
+
+        /**
+         * 
+         * @param margin
+         * @return
+         */
+        public ThemeObject setMarginLeft(int margin) {
+                this.marginLeft = margin;
+
+                return this;
+        }
+
+        /**
+         * 
+         * @param margin
+         * @return
+         */
+        public ThemeObject setMarginRight(int margin) {
+                this.marginRight = margin;
+
+                return this;
+        }
+
+        /**
+         * 
+         * @param margin
+         * @return
+         */
+        public ThemeObject setMarginTop(int margin) {
+                this.marginTop = margin;
+
+                return this;
+        }
+
+        /**
+         * 
+         * @param margin
+         * @return
+         */
+        public ThemeObject setMarginBottonm(int margin) {
+                this.marginBottom = margin;
+
                 return this;
         }
 
@@ -784,6 +850,38 @@ public class ThemeObject {
          */
         public int getPaddingBottom() {
                 return this.paddingBottom;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getMarginLeft() {
+                return this.marginLeft;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getMarginRight() {
+                return this.marginRight;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getMarginTop() {
+                return this.marginTop;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getMarginBottom() {
+                return this.marginBottom;
         }
 
 

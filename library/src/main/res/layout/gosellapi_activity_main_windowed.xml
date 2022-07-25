@@ -8,6 +8,13 @@
     android:theme="@style/GoSellSDKAppTheme"
     >
 
+    <RelativeLayout
+    android:id="@+id/basicLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
     <ScrollView
         android:id="@+id/main_windowed_scrollview"
         android:layout_width="match_parent"
@@ -17,6 +24,7 @@
         >
 
         <RelativeLayout
+            android:id="@+id/mainContentFrame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -41,5 +49,5 @@
 
     </ScrollView>
 
-
+</RelativeLayout>
 </RelativeLayout>
