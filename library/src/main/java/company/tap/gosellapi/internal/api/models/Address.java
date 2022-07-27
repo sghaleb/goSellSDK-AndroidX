@@ -84,4 +84,76 @@ public final class Address implements Serializable {
     @SerializedName("postal_code")
     @Expose
     private String postalCode;
+
+    public AddressFormat getFormat() {
+        return this.format;
+    }
+
+    public AddressType getType() {
+        return this.type;
+    }
+
+    public String getCountry() {
+        return this.country;
+    }
+
+    public String getLine1() {
+        return this.line1;
+    }
+
+    public String getLine2() {
+        return this.line2;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public String getZipCode() {
+        return this.zipCode;
+    }
+
+    public String getCountryGovernorate() {
+        return this.countryGovernorate;
+    }
+
+    public String getArea() {
+        return this.area;
+    }
+
+    public String getBlock() {
+        return this.block;
+    }
+
+    public String getAvenue() {
+        return this.avenue;
+    }
+
+    public String getStreet() {
+        return this.street;
+    }
+
+    public String getBuildingHouse() {
+        return this.buildingHouse;
+    }
+
+    public String getFloor() {
+        return this.floor;
+    }
+
+    public String getOffice() {
+        return this.office;
+    }
+
+    public String getPoBox() {
+        return this.poBox;
+    }
+
+    public String getPostalCode() {
+        return this.postalCode;
+    }
 }

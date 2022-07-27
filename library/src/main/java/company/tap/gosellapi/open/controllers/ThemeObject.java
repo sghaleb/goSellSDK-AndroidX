@@ -18,7 +18,7 @@ public class ThemeObject {
         /**
          * Appearance Mode
          */
-        private AppearanceMode appearanceMode ;
+        private AppearanceMode appearanceMode;
 
         /**
          *  Appearance Background

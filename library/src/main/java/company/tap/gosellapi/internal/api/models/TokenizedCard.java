@@ -104,7 +104,9 @@ public final class TokenizedCard implements Serializable {
         return expirationYear;
     }
 
-
+    public CardBrand getBrand() {
+        return this.brand;
+    }
 
     public String getFunding() {
         return funding;
@@ -113,8 +115,6 @@ public final class TokenizedCard implements Serializable {
     public String getName() {
         return name;
     }
-
-
 
     @Nullable
     public Address getAddress() {

@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.graphics.drawable.GradientDrawable;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -106,7 +107,7 @@ public class GoSellPaymentActivity extends BaseActivity
     private SavedCard savedCard;
     private WebPaymentViewModel webPaymentViewModel;
 
-    private AppearanceMode apperanceMode;
+    private AppearanceMode appearanceMode;
 
     static int mAppHeight;
     static int currentOrientation = -1;
@@ -127,9 +128,10 @@ public class GoSellPaymentActivity extends BaseActivity
 
         overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
         setupScreenMode();
-        apperanceMode = ThemeObject.getInstance().getAppearanceMode();
+        appearanceMode = ThemeObject.getInstance().getAppearanceMode();
+        Log.i("TapPay: AppearanceMode:onCreate", appearanceMode.toString());
 
-        if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
+        if (appearanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
             main_windowed_scrollview = findViewById(R.id.main_windowed_scrollview);
             RelativeLayout basicLayout = findViewById(R.id.basicLayout);
@@ -148,15 +150,15 @@ public class GoSellPaymentActivity extends BaseActivity
         }
 
         Log.i("TapPay", "Margins:" + String.format("value = %d", ThemeObject.getInstance().getMarginLeft()));
-        // RelativeLayout container = findViewById(R.id.mainContentFrame);
-        
-        ScrollView sc = findViewById(R.id.main_windowed_scrollview);
+        RelativeLayout container = findViewById(R.id.mainContentFrame);
+        if (container != null)
+            createCustomView(container, 0xff80ff, 0xff0000);
 
-        sc.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
-                    
-        // int padding_in_dp = 6;  // 6 dps
-        // final float scale = getResources().getDisplayMetrics().density;
-        // int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+        ScrollView sc = findViewById(R.id.main_windowed_scrollview);
+        if (sc != null)
+            sc.setBackgroundColor(ThemeObject.getInstance().getBackgroundColor());
+        // sc.setPadding(20, 20, 20, 20);
+        
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -235,7 +237,9 @@ public class GoSellPaymentActivity extends BaseActivity
     }
 
     private void setupScreenMode() {
+        Log.i("TapPay: AppearanceMode", "Switching appearance mode 1");
         if(isTransactionModeTokenizeCard()|| isTransactionModeSaveCard()) {
+            Log.i("TapPay: AppearanceMode", "Switching appearance mode 2");
             ThemeObject.getInstance().setAppearanceMode(AppearanceMode.WINDOWED_MODE);
         }
     }
@@ -410,7 +414,8 @@ public class GoSellPaymentActivity extends BaseActivity
 
     private boolean isTransactionModeSaveCard() {
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest()!=null){
-            ThemeObject.getInstance().setAppearanceMode(AppearanceMode.WINDOWED_MODE);
+            Log.i("TapPay: AppearanceMode", "isTransactionModeSaveCard");
+            // ThemeObject.getInstance().setAppearanceMode(AppearanceMode.WINDOWED_MODE);
             return PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD;
         }else return false;
     }
@@ -1395,6 +1400,14 @@ public class GoSellPaymentActivity extends BaseActivity
         }.start();
     }
 
+    private void createCustomView(View v, int backgroundColor, int borderColor) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setPadding(0, 2, 0, 2);
+        shape.setCornerRadii(new float[] { 16, 16, 16, 16, 16, 16, 16, 16 });
+        shape.setColor(backgroundColor);
+        shape.setStroke(3, borderColor);
+        v.setBackground(shape);
+        v.setClipToOutline(true);
+    }
 }
-
-
