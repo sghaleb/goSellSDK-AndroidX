@@ -1403,7 +1403,11 @@ public class GoSellPaymentActivity extends BaseActivity
     private void createCustomView(View v, int backgroundColor, int borderColor) {
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
-        shape.setPadding(0, 2, 0, 2);
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODE.Q) {
+            shape.setPadding(0, 2, 0, 2);
+        }
+        
         shape.setCornerRadii(new float[] { 16, 16, 16, 16, 16, 16, 16, 16 });
         shape.setColor(backgroundColor);
         shape.setStroke(3, borderColor);
