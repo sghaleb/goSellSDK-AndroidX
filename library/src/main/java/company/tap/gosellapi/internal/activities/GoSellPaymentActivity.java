@@ -1404,8 +1404,8 @@ public class GoSellPaymentActivity extends BaseActivity
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
         
-        Log.i('TapPayment', android.os.Build.VERSION.SDK_INT.toString());
-        
+        Log.i("TapPayment", android.os.Build.VERSION.SDK_INT.toString());
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             shape.setPadding(0, 2, 0, 2);
         }
